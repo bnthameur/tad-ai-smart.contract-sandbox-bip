@@ -1,0 +1,32 @@
+[
+    {
+        "name": "Uranium Finance",
+        "address": "0x403163102c09939951c33f2622e0300d02636359",
+        "chain": "bsc",
+        "vulnerability_type": "Logic Error",
+        "loss_amount": "50000000",
+        "date": "2021-04-28",
+        "description": "Rounding error in swap function allowing 1 wei exploit",
+        "source_verified": true
+    },
+    {
+        "name": "Value DeFi",
+        "address": "0x498a7226502079d860d7c3905337966956507425",
+        "chain": "ethereum",
+        "vulnerability_type": "Oracle Manipulation",
+        "loss_amount": "6000000",
+        "date": "2020-11-14",
+        "description": "Flash loan attack manipulating Curve oracle price",
+        "source_verified": true
+    },
+    {
+        "name": "Euler Finance",
+        "address": "0xeb91861f8a4e1c12333f4297b67bc238555a585d",
+        "chain": "ethereum",
+        "vulnerability_type": "Logic Error",
+        "loss_amount": "197000000",
+        "date": "2023-03-13",
+        "description": "Donation logic flaw allowing insolvency",
+        "source_verified": true
+    }
+]
