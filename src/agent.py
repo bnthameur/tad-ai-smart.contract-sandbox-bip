@@ -12,7 +12,7 @@ from typing import List, Dict, Any, Optional
 from dataclasses import dataclass
 from enum import Enum
 
-from prompts.security_auditor import SYSTEM_PROMPT
+from src.prompts.security_auditor import SYSTEM_PROMPT
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("AIAgent")
