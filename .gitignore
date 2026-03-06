@@ -1,0 +1,49 @@
+# Dependencies
+node_modules/
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+venv/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Build outputs
+dist/
+build/
+*.egg-info/
+
+# Foundry
+cache/
+out/
+broadcast/
+
+# Data and reports (keep structure, ignore content)
+data/contracts/*
+!data/contracts/.gitkeep
+reports/*
+!reports/.gitkeep
+forks/*
+!forks/.gitkeep
+
+# Logs
+*.log
+logs/
+
+# Test outputs
+tests/__pycache__/
+tests/.pytest_cache/

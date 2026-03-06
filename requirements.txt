@@ -1,0 +1,31 @@
+# Core dependencies
+web3>=6.0.0
+eth-account>=0.8.0
+eth-utils>=2.1.0
+
+# AI/LLM integrations
+openai>=1.0.0
+anthropic>=0.20.0
+requests>=2.31.0
+
+# Data processing
+pandas>=2.0.0
+numpy>=1.24.0
+
+# Blockchain interaction
+python-dotenv>=1.0.0
+pydantic>=2.0.0
+
+# Testing
+pytest>=7.4.0
+pytest-asyncio>=0.21.0
+
+# CLI tools
+click>=8.1.0
+rich>=13.5.0
+typer>=0.9.0
+
+# Utilities
+pyyaml>=6.0
+tqdm>=4.65.0
+colorama>=0.4.6
