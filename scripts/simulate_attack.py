@@ -19,7 +19,8 @@ def main():
     parser.add_argument("address", help="Target contract address")
     parser.add_argument("--chain", default="ethereum", help="Target chain")
     parser.add_argument("--block", type=int, help="Fork block number")
-    parser.add_argument("--model", default="deepseek", help="AI Model provider")
+    parser.add_argument("--model", default="deepseek", 
+                       help="AI Model provider (deepseek, qwen, kimi, openai, anthropic, google, local)")
     parser.add_argument("--rpc", default=os.getenv("RPC_URL_MAINNET"), help="RPC Provider URL")
     
     args = parser.parse_args()
