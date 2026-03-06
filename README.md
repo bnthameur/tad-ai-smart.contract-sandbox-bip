@@ -59,25 +59,25 @@ Report + Educational Content (EN/AR/FR)
 
 ## 📅 Roadmap (12 Months)
 
-### Phase 1: Environment Setup (Months 1-2) ✅ IN PROGRESS
+### Phase 1: Environment Setup (Months 1-2) ✅ COMPLETE
 - [x] Docker image with Foundry toolchain
 - [x] Anvil-based chain forking
-- [ ] CLI interface for sandbox management
-- [ ] Multi-chain support (Ethereum, BSC, Polygon)
+- [x] CLI interface for sandbox management
+- [x] Multi-chain support (Ethereum, BSC, Polygon)
 
-### Phase 2: AI Agent Development (Months 3-5)
-- [ ] Model integration (DeepSeek, Qwen, Kimi)
-- [ ] Tool orchestration (MCP-style)
-- [ ] Prompt engineering for vulnerability detection
-- [ ] Iterative exploit generation
+### Phase 2: AI Agent Development (Months 3-5) ✅ COMPLETE
+- [x] Model integration (DeepSeek, Qwen, Kimi)
+- [x] Tool orchestration (MCP-style)
+- [x] Prompt engineering for vulnerability detection
+- [x] Iterative exploit generation
 
-### Phase 3: Real-Time Simulation (Months 6-8)
+### Phase 3: Real-Time Simulation (Months 6-8) 🔄 PENDING
 - [ ] Automated fork management
 - [ ] Exploit execution pipeline
 - [ ] Success metrics (balance delta, gas cost)
 - [ ] State caching for repeated tests
 
-### Phase 4: Dataset & Benchmarking (Months 9-10)
+### Phase 4: Dataset & Benchmarking (Months 9-10) 🔄 PENDING
 - [ ] Curate 100+ historical exploited contracts
 - [ ] Novel vulnerability hunting on live contracts
 - [ ] Benchmark: detection rate, false positives, cost
