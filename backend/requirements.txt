@@ -1,0 +1,22 @@
+# Core API
+fastapi>=0.109.0
+uvicorn[standard]>=0.27.0
+python-multipart>=0.0.7
+
+# Database
+sqlalchemy>=2.0.0
+alembic>=1.13.0
+psycopg2-binary>=2.9.0
+pydantic-settings>=2.1.0
+
+# Async Tasks
+celery>=5.3.0
+redis>=5.0.0
+
+# Security
+python-jose[cryptography]>=3.3.0
+passlib[bcrypt]>=1.7.4
+
+# Import core logic (ensure these are compatible)
+web3>=6.0.0
+# ... other core deps are in root requirements.txt
