@@ -26,7 +26,13 @@ celery_app.conf.update(
     enable_utc=True,
 )
 
-@celery_app.task(bind=True)
+@celery_app.task(
+    bind=True,
+    max_retries=3,  # Retry failed tasks 3 times
+    default_retry_delay=60,  # Wait 1 min between retries
+    autoretry_for=(Exception,),  # Retry on any error
+    retry_backoff=True  # Exponential backoff
+)
 def run_security_scan(self, scan_id: int, contract_address: str, chain: str, 
                       contract_source: Optional[str], model_provider: str):
     """
@@ -114,6 +120,12 @@ def run_security_scan(self, scan_id: int, contract_address: str, chain: str,
         scan.status = "failed"
         db.commit()
         self.update_state(state="FAILURE", meta={"error": str(e)})
+        # Retry the task
+        try:
+            self.retry(countdown=60)
+        except self.MaxRetriesExceededError:
+            logger.error(f"Max retries exceeded for scan {scan_id}")
+            # Final failure - could send alert here
         raise
         
     finally:
