@@ -4,39 +4,53 @@ services:
   # PostgreSQL Database
   postgres:
     image: postgres:16-alpine
+    restart: always
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: tad_sandbox
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    ports:
-      - "5432:5432"
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 5s
       timeout: 5s
       retries: 5
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
 
   # Redis for Celery
   redis:
     image: redis:7-alpine
-    ports:
-      - "6379:6379"
+    restart: always
     volumes:
       - redis_data:/data
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
 
   # FastAPI Backend
   api:
     build:
       context: ..
       dockerfile: backend/Dockerfile
+    restart: always
     environment:
       - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/tad_sandbox
       - REDIS_URL=redis://redis:6379/0
-      - RPC_URL_MAINNET=${RPC_URL_MAINNET}
-      - DEEPSEEK_API_KEY=${DEEPSEEK_API_KEY}
-      # ... other API keys
+      # Pass through all keys from host .env
+      - RPC_URL_MAINNET
+      - DEEPSEEK_API_KEY
+      - QWEN_API_KEY
+      - KIMI_API_KEY
+      - ANTHROPIC_API_KEY
+      - OPENAI_API_KEY
+      - GOOGLE_API_KEY
     ports:
       - "8000:8000"
     depends_on:
@@ -44,33 +58,42 @@ services:
         condition: service_healthy
       redis:
         condition: service_started
-    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --workers 4
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
 
-  # Celery Worker (runs the analysis)
+  # Celery Worker (Scalable Analysis Engine)
   worker:
     build:
       context: ..
       dockerfile: backend/Dockerfile
+    restart: always
+    deploy:
+      replicas: 2  # Default to 2 workers, scale up on powerful VPS
     environment:
       - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/tad_sandbox
       - REDIS_URL=redis://redis:6379/0
-      - RPC_URL_MAINNET=${RPC_URL_MAINNET}
-      - DEEPSEEK_API_KEY=${DEEPSEEK_API_KEY}
+      - RPC_URL_MAINNET
+      - DEEPSEEK_API_KEY
+      - QWEN_API_KEY
+      - KIMI_API_KEY
+      - ANTHROPIC_API_KEY
+      - OPENAI_API_KEY
+      - GOOGLE_API_KEY
     depends_on:
       - postgres
       - redis
-    command: celery -A app.workers.celery_worker worker --loglevel=info --concurrency=2
-
-  # Celery Beat (optional, for scheduled tasks)
-  # beat:
-  #   build:
-  #     context: ..
-  #     dockerfile: backend/Dockerfile
-  #   environment:
-  #     - REDIS_URL=redis://redis:6379/0
-  #   depends_on:
-  #     - redis
-  #   command: celery -A app.workers.celery_worker beat --loglevel=info
+    # Prefetch multiplier 1 ensures tasks aren't hogged by busy workers
+    # -O fair optimizes for long-running tasks like audits
+    command: celery -A app.workers.celery_worker worker --loglevel=info --concurrency=4 -O fair --prefetch-multiplier=1
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
 
 volumes:
   postgres_data:
