@@ -47,8 +47,15 @@ class Orchestrator:
         """Initialize SQLite database"""
         DB_PATH.parent.mkdir(exist_ok=True)
         conn = sqlite3.connect(DB_PATH)
-        with open(Path(__file__).parent / "schema.sql") as f:
-            conn.executescript(f.read())
+        cursor = conn.cursor()
+        
+        # Check if tables exist
+        cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='workers'")
+        if not cursor.fetchone():
+            # Tables don't exist, create them
+            with open(Path(__file__).parent / "schema.sql") as f:
+                conn.executescript(f.read())
+        
         conn.close()
         
     def _load_workers(self):
